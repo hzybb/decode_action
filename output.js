@@ -1,296 +1,402 @@
-//Mon Aug 19 2024 12:14:13 GMT+0000 (Coordinated Universal Time)
+//Tue Aug 20 2024 03:37:04 GMT+0000 (Coordinated Universal Time)
 //Base:https://github.com/echo094/decode-js
 //Modify:https://github.com/smallfawn/decode_action
-const {
-  sign,
-  getToken,
-  wait,
-  checkCk,
-  validateCarmeWithType,
-  User_Agent,
-  getCookies,
-  checkCarmeCount,
-  getUserInfo,
-  tryCatchPromise,
-  getCookieMap
-} = require("./common.js");
-const {
-  sendNotify
-} = require("./ele_sendNotify.js");
-const _0x3ee842 = require("moment");
-const _0x43a291 = require("request");
-const _0xf58a19 = 10;
-const _0x55733f = "异常";
-let _0x31839a = getCookies();
-const _0x46e8ae = process.env.ELE_CARME;
-var _0x2c5f85 = "| 昵称          | 乐园币    | 总吃货豆 |余额 |\n| ------------- | ------------------ | ---------|---------|\n";
-function _0x15e7a0() {
-  return _0x3ee842().format("YYYY-MM-DD");
-}
-function _0x23f651() {
-  var _0x1b2b0a = new Date(),
-    _0x1344ed = _0x1b2b0a.getMonth() + 1,
-    _0x3be63e = _0x1b2b0a.getDate();
-  _0x1344ed <= 9 && (_0x1344ed = "0" + _0x1344ed);
-  _0x3be63e <= 9 && (_0x3be63e = "0" + _0x3be63e);
-  return _0x1b2b0a.getFullYear() + "-" + _0x1344ed + "-" + _0x3be63e;
-}
-function _0x1fb425(_0x1a7133) {
-  const _0x879662 = {
-    url: "https://httpizza.ele.me/walletUserV2/storedcard/queryBalanceBycardType?cardType=platform",
-    headers: {}
-  };
-  _0x879662.headers.Cookie = _0x1a7133;
-  _0x879662.headers["User-Agent"] = User_Agent;
-  _0x879662.headers.referer = "https://r.ele.me/alsc-wallet/home.html?channel=grzx";
-  return tryCatchPromise(_0x171e05 => {
-    _0x43a291(_0x879662, async (_0x3c1e94, _0x7b3e1d, _0x1d7b01) => {
-      if (!_0x3c1e94 && _0x7b3e1d.statusCode == 200) {
-        const _0x1c177e = JSON.parse(_0x1d7b01);
-        try {
-          _0x171e05(_0x1c177e.data.totalAmount);
-        } catch (_0x22658b) {
-          console.log(_0x1d7b01);
-          _0x171e05(null);
-        }
-      } else {
-        _0x171e05(null);
-      }
-    });
-  });
-}
-function _0xe7326c(_0x120afa) {
-  const _0x1b9ec9 = {
-    Cookie: _0x120afa,
-    "User-Agent": User_Agent
-  };
-  const _0x244676 = {
-    url: "https://h5.ele.me/restapi/svip_biz/v1/supervip/foodie/records?latitude=30.153352&limit=20&longitude=104.153352&offset=0",
-    headers: _0x1b9ec9
-  };
-  return tryCatchPromise(_0x131e5d => {
-    _0x43a291(_0x244676, async (_0x14f786, _0x49345d, _0x618a68) => {
-      if (!_0x14f786 && _0x49345d.statusCode == 200) {
-        const _0x18bbc7 = JSON.parse(_0x618a68);
-        try {
-          _0x131e5d(_0x18bbc7.peaCount);
-        } catch (_0x3df62f) {
-          console.log(_0x618a68);
-          _0x131e5d(null);
-        }
-      } else {
-        _0x131e5d(null);
-      }
-    });
-  });
-}
-async function _0xc1502e(_0x160c7f) {
-  const _0x3562ed = {
-    "content-type": "application/json",
-    Cookie: _0x160c7f,
-    "User-Agent": "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/50.0.2661.87 Safari/537.36"
-  };
-  s = _0x3562ed;
-  r = "https://h5.ele.me/restapi/svip_biz/v1/supervip/foodie/records?offset=0&limit=100&longitude=39.916527&latitude=116.397128";
-  const _0x48f96f = {
-    url: r,
-    headers: s
-  };
-  return tryCatchPromise(_0x74a4a1 => {
-    _0x43a291(_0x48f96f, async (_0x52123b, _0x42a22e, _0x5dd484) => {
-      if (!_0x52123b && _0x42a22e.statusCode == 200) {
-        const _0xdaab51 = JSON.parse(_0x5dd484);
-        try {
-          for (var _0x1d6792 = _0x23f651(), _0x1c93be = _0xdaab51.records, _0x33b6c4 = 0, _0x3c813c = 0; _0x3c813c < _0x1c93be.length; _0x3c813c++) {
-            _0x1c93be[_0x3c813c].createdTime.indexOf(_0x1d6792) > -1 && 1 == _0x1c93be[_0x3c813c].optType && (_0x33b6c4 += _0x1c93be[_0x3c813c].count);
+const ag = new Env("🍕达美乐披萨"),
+  ah = ag.isNode() ? require("./sendNotify") : "",
+  ai = "dlm_data";
+ag.host = (ag.isNode() ? process.env.dlm_game : ag.getdata("dlm_game")) || "";
+ag.gameDate = (ag.isNode() ? process.env.dlm_date : ag.getdata("dlm_date")) || "";
+ag.score = ag.toObj(ag.isNode() ? process.env.dlm_score : ag.getdata("dlm_score")) || "false";
+ag.rewardList = ag.toObj(ag.isNode() ? process.env.dlm_reward : ag.getdata("dlm_reward")) || {};
+ag.newNotify = ag.isNode() ? process.env.dlm_notify : ag.getdata("dlm_notify") || "false";
+const aj = 1;
+let ak = ag.toObj(ag.isNode() ? process.env[ai] : ag.getdata(ai)) || [];
+ag.userList = [];
+ag.userIdx = 0;
+ag.notifyMsg = [];
+async function al() {
+  console.log("\n================== 任务 ==================\n");
+  if (!ag.host) {
+    return ag.msg(ag.name, "⚠️ Script run error", "未获取活动id，请先完成一次游戏获取token");
+  }
+  ag.host = ag.host.split(",");
+  ag.log("当前拥有的活动id: " + ag.host);
+  for (let h of ag.userList) {
+    try {
+      if (h.ckStatus) {
+        ag.log("========================================");
+        let j = [];
+        for (let k of ag.host) {
+          console.log("账号[" + h.index + "][" + k + "] 开始执行任务...");
+          h.drawStatus = true;
+          let l = await h.getGameSatuts(k);
+          if (!l) {
+            continue;
           }
-          _0x74a4a1(_0x33b6c4);
-        } catch (_0x545707) {
-          console.log(_0x5dd484);
-          _0x74a4a1(null);
+          await h.getGameSatuts(k);
+          await h.todoList(k);
+          j.push(k);
+          ag.log("========================================");
         }
+        ag.log("所有活动处理完毕");
+        ag.setdata(j.join(","), "dlm_game");
       } else {
-        _0x74a4a1(null);
+        ag.notifyMsg.push("❌账号" + h.index + " >> Check ck error!");
       }
-    });
-  });
+    } catch (q) {
+      ag.log(q);
+    }
+  }
+  ag.setjson(ag.rewardList, "dlm_reward");
 }
-async function _0x2e425a(_0x46ff2a) {
-  const _0x4f9ca3 = {
-    bizScene: "IDIOM",
-    bizParam: "{\"type\":\"ggetGold\"}",
-    bizMethod: "queryIndex"
-  };
-  const _0x39444a = await _0x1df2c9(_0x46ff2a, _0x4f9ca3);
-  return _0x39444a.num;
-}
-async function _0x1df2c9(_0x396c11, _0x1e34ac) {
-  const _0x1c07f0 = {
-    authority: "shopping.ele.me",
-    accept: "application/json",
-    "accept-language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7",
-    "cache-control": "no-cache",
-    "content-type": "application/x-www-form-urlencoded",
-    origin: "https://r.ele.me",
-    pragma: "no-cache",
-    referer: "https://r.ele.me/linkgame/index.html?navType=3&spm-pre=a2ogi.13162730.zebra-ele-login-module-9089118186&spm=a13.b_activity_kb_m71293.0.0",
-    cookie: _0x396c11,
-    "x-ele-ua": "RenderWay/H5 AppName/wap Mozilla/5.0 (Linux; Android 8.0.0; SM-G955U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Mobile Safari/537.36",
-    "user-agent": "Mozilla/5.0 (Linux; Android 8.0.0; SM-G955U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Mobile Safari/537.36"
-  };
-  const _0x9ef4df = new Date().getTime();
-  const _0x582767 = 12574478;
-  var _0x2fb2c6 = "data=" + encodeURIComponent(JSON.stringify(_0x1e34ac));
-  const _0x4e6fdb = getToken(_0x396c11),
-    _0x460c4b = _0x4e6fdb.split("_")[0];
-  const _0x1d360e = await sign(_0x460c4b + "&" + _0x9ef4df + "&" + _0x582767 + "&" + JSON.stringify(_0x1e34ac), _0x46e8ae);
-  const _0x26d10c = {
-    url: "https://shopping.ele.me/h5/mtop.alsc.playgame.mini.game.dispatch/1.0/?jsv=2.6.1&appKey=12574478&t=" + _0x9ef4df + "&sign=" + _0x1d360e + "&api=mtop.alsc.playgame.mini.game.dispatch&v=1.0&type=originaljson&dataType=json&timeout=5000&subDomain=shopping&mainDomain=ele.me&H5Request=true&pageDomain=ele.me&ttid=h5%40chrome_android_87.0.4280.141&SV=5.0",
-    method: "POST",
-    headers: _0x1c07f0,
-    body: _0x2fb2c6
-  };
-  return tryCatchPromise(_0x46952e => {
-    _0x43a291(_0x26d10c, async (_0x1ea0a1, _0x266ff8, _0x582388) => {
-      if (!_0x1ea0a1 && _0x266ff8.statusCode == 200) {
-        try {
-          const _0x3cb15f = JSON.parse(_0x582388);
-          const _0x470a8b = JSON.parse(_0x3cb15f.data.data);
-          _0x46952e(_0x470a8b);
-        } catch (_0x1d36db) {
-          console.log(_0x582388);
-          _0x46952e(null);
-        }
+class am {
+  constructor(i) {
+    this.index = ++ag.userIdx;
+    this.openid = "" + i.userId;
+    this.score = "OVwsw%2BwqeJqODjRpUyxoxOlDen85i5Ce3kdwv5pNCehoGRMojxPWdITi%2BHezcMtt7VJ%2F4SkCbqMYSx6Y6zwyWcmIsXMw9cX6ksXY1V%2B2AtpUrMs9WBJwvmLj9E1BIYV1P0IbR%2BawxHKJcEOAFKxJ52j8PaPLGgugV%2FG3y5%2BvljygajO5SqGTB%2BkFJOepHJWs7NNbxUTALAckiGvym%2BrMGDv762w4CyriRInPkauLnSVCOGAFuad4MsDXp3dokLgifJmmCGzXxMiRJo4QAm0E1gDB%2Bhk1uSwWIUWP%2BX87jaZlgPr%2ByL8Wi99Rpmw9%2BdlecYkP7sxQc7DojY2VyfF06g%3D%3D&";
+    this.body = i.token;
+    this.ckStatus = true;
+    this.drawStatus = true;
+    this.sharingStatus = true;
+    const n = {
+      "User-Agent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_8 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/15E148 MicroMessenger/8.0.42(0x18002a2c) NetType/WIFI Language/zh_CN",
+      "Content-Type": "application/x-www-form-urlencoded"
+    };
+    this.headers = n;
+  }
+  getRandomTime() {
+    return aq(1000, 3000);
+  }
+  async gameDone(h) {
+    try {
+      let k = ag.score != "false" ? ag.queryStr({
+        openid: this.openid,
+        score: this.score,
+        tempId: "null"
+      }) : this.body;
+      const l = {};
+      l.url = "https://game.dominos.com.cn/" + h + "/game/gameDone";
+      l.headers = this.headers;
+      l.body = k;
+      const m = l;
+      let n = await av(m);
+      if (n?.["statusCode"] == 0) {
+        console.log("账号[" + this.index + "][" + h + "] 抽奖成功!获得" + n?.["content"]?.["name"]);
+        let o = n?.["content"]["name"]["replace"](/(奖\-[1-9]\：|奖\：)/g, "奖 ")["replace"]("一张", "")["replace"]("1份", "")["replace"]("1张", "");
+        ag.rewardList[n?.["content"]["id"]] = o;
       } else {
-        _0x46952e(null);
+        console.log("账号[" + this.index + "][" + h + "] " + n?.["errorMessage"]);
+        this.drawStatus = false;
       }
-    });
-  });
-}
-async function _0xf7ccac(_0x1e0e27, _0x54f7f5) {
-  const _0x4e034e = {
-    authority: "mtop.ele.me",
-    accept: "application/json",
-    "accept-language": "zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7",
-    "cache-control": "no-cache",
-    "content-type": "application/x-www-form-urlencoded",
-    cookie: _0x1e0e27,
-    origin: "https://tb.ele.me",
-    pragma: "no-cache",
-    referer: "https://tb.ele.me/wow/alsc/mod/b9ee9e6451bc8eda7a6afcbb?spm=a2ogi.13162730.zebra-ele-login-module-9089118186&spm=a2ogi.13162730.zebra-ele-login-module-9089118186&spm-pre=a13.b_activity_kb_m71293.ebridge.login",
-    "user-agent": "Mozilla/5.0 (Linux; Android 8.0.0; SM-G955U Build/R16NW) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Mobile Safari/537.36"
-  };
-  const _0x1d1a7b = {
-    templateId: "1404",
-    bizScene: "game_center",
-    convertType: "GAME_CENTER",
-    startTime: _0x15e7a0() + " 00:00:00",
-    pageNo: _0x54f7f5,
-    pageSize: "20"
-  };
-  const _0xa0411f = new Date().getTime();
-  const _0x2b5c72 = 12574478;
-  var _0x1a5ddd = "data=" + encodeURIComponent(JSON.stringify(_0x1d1a7b));
-  const _0x267792 = getToken(_0x1e0e27),
-    _0x1c4025 = _0x267792.split("_")[0];
-  const _0x26ba75 = await sign(_0x1c4025 + "&" + _0xa0411f + "&" + _0x2b5c72 + "&" + JSON.stringify(_0x1d1a7b), _0x46e8ae);
-  const _0x421606 = {
-    url: "https://mtop.ele.me/h5/mtop.koubei.interaction.center.common.querypropertydetail/1.0/?jsv=2.7.1&appKey=12574478&t=" + _0xa0411f + "&sign=" + _0x26ba75 + "&api=mtop.koubei.interaction.center.common.querypropertydetail&v=1.0",
-    method: "POST",
-    headers: _0x4e034e,
-    body: _0x1a5ddd
-  };
-  return tryCatchPromise(_0x51e67c => {
-    _0x43a291(_0x421606, async (_0x451736, _0x3352bc, _0x15e984) => {
-      if (!_0x451736 && _0x3352bc.statusCode === 200) {
-        const _0x1fab8a = JSON.parse(_0x15e984);
-        try {
-          if (_0x1fab8a.data) {
-            var _0x5192ab = 0;
-            for (let _0xadb515 = 0; _0xadb515 < _0x1fab8a.data.list.length; _0xadb515++) {
-              const _0x4b4d8f = _0x1fab8a.data.list[_0xadb515];
-              if (_0x4b4d8f.detailType === "GRANT" && _0x4b4d8f.gmtModified.indexOf(_0x15e7a0()) !== -1) {
-                _0x5192ab += Number(_0x4b4d8f.amount);
-              }
+    } catch (r) {
+      console.log(r);
+    }
+  }
+  async sharingDone(h) {
+    try {
+      const j = {
+        url: "https://game.dominos.com.cn/" + h + "/game/sharingDone",
+        headers: this.headers,
+        body: "openid=" + this.openid + "&from=1&target=0"
+      };
+      let l = await av(j);
+      l?.["statusCode"] == 0 ? console.log("账号[" + this.index + "][" + h + "] 分享成功,抽奖次数+1") : (console.log("账号[" + this.index + "][" + h + "] " + l?.["errorMessage"]), this.sharingStatus = false);
+    } catch (p) {
+      console.log(p);
+    }
+  }
+  async todoList(g) {
+    const i = ag.userList.length >= 8;
+    let j = 0;
+    do {
+      i ? (ag.log("账号[" + this.index + "][" + g + "] 分享成功,抽奖次数+1"), await ag.wait(1000)) : await this.sharingDone(g);
+      j++;
+    } while (i ? j <= 3 : this.sharingStatus && j <= 8);
+    j = 0;
+    do {
+      i ? (ag.log("账号[" + this.index + "][" + g + "] 抽奖成功!获得五等奖 免费未知奖品券 x1"), await ag.wait(1000)) : await this.gameDone(g);
+      j++;
+    } while (i ? j <= 8 : this.drawStatus && j <= 12);
+    await this.point(g);
+  }
+  async getGameSatuts(h) {
+    try {
+      const k = {
+        url: "https://game.dominos.com.cn/" + h + "/getUser?openid=" + this.openid,
+        headers: this.headers
+      };
+      let m = (await av(k)) ?? "本期活动已经结束";
+      if (m?.["statusCode"] == 0) {
+        return true;
+      }
+      console.log("账号[" + this.index + "][" + h + "] 本期活动已结束，跳过任务");
+    } catch (n) {
+      console.log(n);
+    }
+  }
+  async point(j) {
+    const k = {
+      PQKMl: "SakuraUtil_code",
+      AXnyG: function (l, m) {
+        return l(m);
+      },
+      Mpvuf: function (l) {
+        return l();
+      },
+      ItfgN: "一等奖",
+      HvHTu: "二等奖",
+      VNSlh: "三等奖",
+      QzVwO: "四等奖",
+      ddErW: "五等奖",
+      mIMqb: "no available accounts found",
+      rSQhS: function (l, m) {
+        return l(m);
+      },
+      Nwzng: function (l, m) {
+        return l !== m;
+      },
+      xyofh: "gFgTv",
+      WTHuh: function (l, m) {
+        return l == m;
+      },
+      fclII: "KIbry",
+      CZSSC: function (l, m) {
+        return l != m;
+      },
+      IMlkm: "false",
+      ubaHJ: function (l, m) {
+        return l === m;
+      },
+      TixaJ: "tQAcl",
+      XmvdB: "rqNYt",
+      XdEMp: function (l, m) {
+        return l !== m;
+      },
+      VFKCK: "DJxMz",
+      rceAH: "AFqOH",
+      bLlCy: function (l, m) {
+        return l(m);
+      },
+      vAHJq: function (l, m) {
+        return l !== m;
+      },
+      gifZm: "NHtUB",
+      jEFnv: function (l, m) {
+        return l(m);
+      },
+      TYnRf: "gzMeX",
+      omvUC: function (l, m) {
+        return l === m;
+      },
+      ZvpYC: "nCpNz",
+      cPjkO: function (l, m) {
+        return l(m);
+      },
+      DVwPQ: function (l, m) {
+        return l !== m;
+      },
+      UVBra: "WqOXE",
+      LFvCv: "zImzl",
+      nMNwz: function (l, m) {
+        return l(m);
+      },
+      OqsbI: "ctyUA",
+      tIPCK: "OyOWV"
+    };
+    try {
+      const m = {
+        url: "https://game.dominos.com.cn/" + j + "/game/myPrize?openid=" + this.openid + "&pageSize=1000&pageNum=1",
+        headers: this.headers
+      };
+      let o = await av(m);
+      if (o?.["statusCode"] == 0) {
+        let q = ag.SakuraUtils.getTotal(o?.["content"], "id");
+        if (ag.newNotify != "false") {
+          const s = {
+            "001": "❶",
+            "002": "❷",
+            "003": "❸",
+            "004": "❹",
+            "005": "❺",
+            "006": "❺",
+            "007": "❺",
+            "008": "❺",
+            "009": "❺"
+          };
+          q = q.sort((v, w) => parseInt(v.name) - parseInt(w.name));
+          let u = [];
+          for (let v of q) {
+            u.push(s[v.name]);
+            ag.log(ag.rewardList[v.name] + "x" + v.value);
+          }
+          u = [...new Set(u)];
+          ap("[" + ag.SakuraUtils.phone_num(o?.["extra"]) + "][" + j + "]: " + u.join(" "));
+        } else {
+          ap("账号[" + ag.SakuraUtils.phone_num(o?.["extra"]) + "][" + j + "] 奖品:");
+          const y = {
+            "001": k.ItfgN,
+            "002": k.HvHTu,
+            "003": k.VNSlh,
+            "004": k.QzVwO,
+            "005": k.ddErW
+          };
+          y["001"] = "一等奖";
+          y["002"] = "二等奖";
+          y["003"] = "三等奖";
+          y["004"] = "四等奖";
+          y["005"] = "五等奖";
+          y["005"] = "五等奖";
+          y["006"] = "五等奖";
+          y["007"] = "五等奖";
+          y["008"] = "五等奖";
+          y["009"] = "五等奖";
+          let z = y;
+          q = q.sort((A, B) => parseInt(A.name) - parseInt(B.name));
+          for (let A of q) {
+            if (ag.rewardList[A.name]) {
+              ap(ag.rewardList[A.name] + "x" + A.value);
+            } else {
+              ap(z[A.name] + " 免费未知奖品券x" + A.value);
             }
           }
-          _0x51e67c(_0x5192ab);
-        } catch (_0x2b9b54) {
-          console.log(_0x15e984);
         }
-        _0x51e67c(_0x1fab8a);
       } else {
-        _0x51e67c(null);
+        console.log("❌" + o?.["errorMessage"]);
+      }
+    } catch (F) {
+      console.log(F);
+    }
+  }
+}
+async function an() {
+  try {
+    if ($request && $request.method === "OPTIONS") {
+      return;
+    }
+    const {
+      openid: i
+    } = ao($request.body) ?? {};
+    let j = /^https:\/\/game\.dominos\.com\.cn\/(.+)\/game\/gameDone/;
+    const [, k] = j.exec($request.url);
+    if (!($request.body && k)) {
+      throw new Error("❌获取签到Cookie失败!");
+    }
+    const l = {
+      userId: i,
+      token: $request.body,
+      userName: i
+    };
+    const n = ak.findIndex(o => o.userId == l.userId);
+    ak[n] ? ak[n] = l : ak.push(l);
+    ag.setdata(k, "dlm_game");
+    ag.setjson(ak, ai);
+    ag.msg(ag.name, "🎉获取签到Cookie成功!", "openid: " + i + "\ngame: " + k);
+  } catch (p) {
+    throw p;
+  }
+}
+!(async () => {
+  if (typeof $request != "undefined") {
+    await an();
+    return;
+  }
+  if (!(await as())) {
+    throw new Error("❌加载模块失败，请检查模块路径是否正常");
+  }
+  await at();
+  await al();
+})().catch(g => ag.notifyMsg.push(g.message || g)).finally(async () => {
+  await ar(ag.notifyMsg.join("\n"));
+  ag.done();
+});
+function ao(g) {
+  let i = g.split("&"),
+    j = {};
+  for (let k of i) {
+    let m = k.split("="),
+      n = m[0],
+      o = decodeURIComponent(m[1]);
+    j["" + n] = o;
+  }
+  return j;
+}
+function ap(g) {
+  if (ag.isNode()) {
+    if (g) {
+      console.log("" + g);
+      ag.notifyMsg.push("" + g);
+    }
+  } else {
+    console.log("" + g);
+    ag.notifyMsg.push("" + g);
+  }
+}
+function aq(h, i) {
+  return Math.round(Math.random() * (i - h) + h);
+}
+async function ar(g) {
+  if (!g) {
+    return;
+  }
+  if (ag.isNode()) {
+    await ah.sendNotify(ag.name, g);
+  } else {
+    ag.msg(ag.name, ag.gameDate ? "活动时间:" + ag.gameDate : "", g);
+  }
+}
+async function as() {
+  ag.SakuraUtils = await au();
+  return ag.SakuraUtils ? true : false;
+}
+async function at() {
+  try {
+    if (!ak?.["length"]) {
+      throw new Error("no available accounts found");
+    }
+    ag.log("\n[INFO] 检测到 " + (ak?.["length"] ?? 0) + " 个账号\n");
+    ag.userList.push(...ak.map(i => new am(i)).filter(Boolean));
+  } catch (i) {
+    throw i;
+  }
+}
+async function au() {
+  let h = (ag.isNode() ? process.env.SakuraUtil_code : ag.getdata("SakuraUtil_code")) || "";
+  if (h && Object.keys(h).length) {
+    console.log("✅" + ag.name + ":缓存中存在SakuraUtil代码,跳过下载");
+    eval(h);
+    return creatUtils();
+  }
+  console.log("🚀" + ag.name + ":开始下载SakuraUtil代码");
+  return new Promise(async j => {
+    ag.getScript("https://cdn.jsdelivr.net/gh/Sliverkiss/QuantumultX@main/Utils/SakuraUtil.js").then(l => {
+      ag.setdata(l, "SakuraUtil_code");
+      eval(l);
+      const n = creatUtils();
+      console.log("✅SakuraUtil加载成功,请继续");
+      j(n);
+    });
+  });
+}
+function av(g, h) {
+  typeof h === "undefined" ? "body" in g ? h = "post" : h = "get" : h = h;
+  return new Promise(j => {
+    ag[h](g, (m, n, o) => {
+      try {
+        if (m) {
+          console.log(h + "请求失败");
+          ag.logErr(m);
+        } else {
+          o ? (typeof ag.toObj(o) == "object" ? o = ag.toObj(o) : o = o, j(o)) : console.log("请求api返回数据为空，请检查自身原因");
+        }
+      } catch (v) {
+        ag.logErr(v, n);
+      } finally {
+        j();
       }
     });
   });
 }
-async function _0x378f6c(_0x429356, _0x16a72b) {
-  const _0x220a27 = getCookieMap(_0x429356);
-  if (!_0x220a27.has("wxUid")) {
-    console.log("没有获取到推送 uid，不推送消息\n");
-  } else {
-    await sendNotify("饿了么资产推送", _0x16a72b, {
-      uid: _0x220a27.get("wxUid")
-    });
-  }
-}
-async function _0x163ae7() {
-  await validateCarmeWithType(_0x46e8ae, 1);
-  for (let _0x3913fc = 0; _0x3913fc < _0x31839a.length; _0x3913fc++) {
-    let _0x1e1848 = _0x31839a[_0x3913fc];
-    _0x1e1848 = await checkCk(_0x1e1848);
-    if (!_0x1e1848) {
-      continue;
-    }
-    let _0x17b596 = await getUserInfo(_0x1e1848);
-    if (!_0x17b596.username) {
-      console.log("第", _0x3913fc + 1, "账号失效！请重新登录！！！😭");
-      continue;
-    }
-    const _0x4feeeb = _0x17b596.user_id;
-    await checkCarmeCount(_0x46e8ae, _0x4feeeb, _0xf58a19);
-    console.log("******开始【饿了么账号", _0x3913fc + 1, "】", _0x17b596.username, "*********");
-    let _0x42bffc = await _0x1fb425(_0x1e1848);
-    if (_0x42bffc != null) {
-      _0x42bffc = _0x55733f;
-    } else {
-      _0x42bffc = _0x42bffc / 100;
-    }
-    let _0x524645 = await _0xe7326c(_0x1e1848);
-    if (!_0x524645) {
-      _0x524645 = _0x55733f;
-    }
-    let _0x14465a = await _0xf7ccac(_0x1e1848, 1);
-    await wait(1);
-    let _0x221f17 = await _0xf7ccac(_0x1e1848, 2);
-    await wait(1);
-    let _0x101b47 = await _0xf7ccac(_0x1e1848, 3);
-    await wait(1);
-    let _0x51d93b = await _0xf7ccac(_0x1e1848, 4);
-    await wait(1);
-    let _0x2e48f2 = await _0xf7ccac(_0x1e1848, 5);
-    let _0x30b429 = _0x14465a + _0x221f17 + _0x101b47 + _0x51d93b + _0x2e48f2;
-    if (!_0x30b429) {
-      _0x30b429 = _0x55733f;
-    }
-    var _0x4b0682 = await _0x2e425a(_0x1e1848);
-    if (!_0x4b0682) {
-      _0x4b0682 = _0x55733f;
-    }
-    console.log("乐园币：" + _0x30b429);
-    console.log("当前乐园币：" + _0x4b0682);
-    console.log("总吃货豆：" + _0x524645);
-    console.log("余额：" + _0x42bffc);
-    var _0x3ec5bd = "###资产推送\n" + _0x2c5f85 + "|" + _0x17b596.username + "|" + _0x30b429 + "/" + _0x4b0682 + "|" + _0x524645 + "|" + _0x42bffc + "|";
-    await _0x378f6c(_0x1e1848, _0x3ec5bd);
-    await wait(10);
-  }
-  process.exit(0);
-}
-_0x163ae7();
 function Env(t, e) {
-  "undefined" != typeof process && JSON.stringify(process.env).indexOf("GITHUB") > -1 && process.exit(0);
   class s {
     constructor(t) {
       this.env = t;
@@ -302,7 +408,7 @@ function Env(t, e) {
       let s = this.get;
       "POST" === e && (s = this.post);
       return new Promise((e, i) => {
-        s.call(this, t, (t, s, r) => {
+        s.call(this, t, (t, s, o) => {
           t ? i(t) : e(s);
         });
       });
@@ -316,6 +422,19 @@ function Env(t, e) {
   }
   return new class {
     constructor(t, e) {
+      this.logLevels = {
+        debug: 0,
+        info: 1,
+        warn: 2,
+        error: 3
+      };
+      this.logLevelPrefixs = {
+        debug: "[DEBUG] ",
+        info: "[INFO] ",
+        warn: "[WARN] ",
+        error: "[ERROR] "
+      };
+      this.logLevel = "info";
       this.name = t;
       this.http = new s(this);
       this.data = null;
@@ -324,21 +443,31 @@ function Env(t, e) {
       this.isMute = !1;
       this.isNeedRewrite = !1;
       this.logSeparator = "\n";
+      this.encoding = "utf-8";
       this.startTime = new Date().getTime();
       Object.assign(this, e);
       this.log("", `🔔${this.name}, 开始!`);
     }
+    getEnv() {
+      return "undefined" != typeof $environment && $environment["surge-version"] ? "Surge" : "undefined" != typeof $environment && $environment["stash-version"] ? "Stash" : "undefined" != typeof module && module.exports ? "Node.js" : "undefined" != typeof $task ? "Quantumult X" : "undefined" != typeof $loon ? "Loon" : "undefined" != typeof $rocket ? "Shadowrocket" : void 0;
+    }
     isNode() {
-      return "undefined" != typeof module && !!module.exports;
+      return "Node.js" === this.getEnv();
     }
     isQuanX() {
-      return "undefined" != typeof $task;
+      return "Quantumult X" === this.getEnv();
     }
     isSurge() {
-      return "undefined" != typeof $httpClient && "undefined" == typeof $loon;
+      return "Surge" === this.getEnv();
     }
     isLoon() {
-      return "undefined" != typeof $loon;
+      return "Loon" === this.getEnv();
+    }
+    isShadowrocket() {
+      return "Shadowrocket" === this.getEnv();
+    }
+    isStash() {
+      return "Stash" === this.getEnv();
     }
     toObj(t, e = null) {
       try {
@@ -347,17 +476,16 @@ function Env(t, e) {
         return e;
       }
     }
-    toStr(t, e = null) {
+    toStr(t, e = null, ...s) {
       try {
-        return JSON.stringify(t);
+        return JSON.stringify(t, ...s);
       } catch {
         return e;
       }
     }
     getjson(t, e) {
       let s = e;
-      const i = this.getdata(t);
-      if (i) {
+      if (this.getdata(t)) {
         try {
           s = JSON.parse(this.getdata(t));
         } catch {}
@@ -382,21 +510,22 @@ function Env(t, e) {
       return new Promise(s => {
         let i = this.getdata("@chavy_boxjs_userCfgs.httpapi");
         i = i ? i.replace(/\n/g, "").trim() : i;
-        let r = this.getdata("@chavy_boxjs_userCfgs.httpapi_timeout");
-        r = r ? 1 * r : 20;
-        r = e && e.timeout ? e.timeout : r;
-        const [o, h] = i.split("@"),
+        let o = this.getdata("@chavy_boxjs_userCfgs.httpapi_timeout");
+        o = o ? 1 * o : 20;
+        o = e && e.timeout ? e.timeout : o;
+        const [r, a] = i.split("@"),
           n = {
-            url: `http://${h}/v1/scripting/evaluate`,
+            url: `http://${a}/v1/scripting/evaluate`,
             body: {
               script_text: t,
               mock_type: "cron",
-              timeout: r
+              timeout: o
             },
             headers: {
-              "X-Key": o,
+              "X-Key": r,
               Accept: "*/*"
-            }
+            },
+            timeout: o
           };
         this.post(n, (t, e, i) => s(i));
       }).catch(t => this.logErr(t));
@@ -433,29 +562,30 @@ function Env(t, e) {
           e = this.path.resolve(process.cwd(), this.dataFile),
           s = this.fs.existsSync(t),
           i = !s && this.fs.existsSync(e),
-          r = JSON.stringify(this.data);
-        s ? this.fs.writeFileSync(t, r) : i ? this.fs.writeFileSync(e, r) : this.fs.writeFileSync(t, r);
+          o = JSON.stringify(this.data);
+        s ? this.fs.writeFileSync(t, o) : i ? this.fs.writeFileSync(e, o) : this.fs.writeFileSync(t, o);
       }
     }
     lodash_get(t, e, s) {
       const i = e.replace(/\[(\d+)\]/g, ".$1").split(".");
-      let r = t;
-      for (const t of i) if (r = Object(r)[t], void 0 === r) {
+      let o = t;
+      for (const t of i) if (o = Object(o)[t], void 0 === o) {
         return s;
       }
-      return r;
+      return o;
     }
     lodash_set(t, e, s) {
-      return Object(t) !== t ? t : (Array.isArray(e) || (e = e.toString().match(/[^.[\]]+/g) || []), e.slice(0, -1).reduce((t, s, i) => Object(t[s]) === t[s] ? t[s] : t[s] = Math.abs(e[i + 1]) >> 0 == +e[i + 1] ? [] : {}, t)[e[e.length - 1]] = s, t);
+      Object(t) !== t || (Array.isArray(e) || (e = e.toString().match(/[^.[\]]+/g) || []), e.slice(0, -1).reduce((t, s, i) => Object(t[s]) === t[s] ? t[s] : t[s] = Math.abs(e[i + 1]) >> 0 == +e[i + 1] ? [] : {}, t)[e[e.length - 1]] = s);
+      return t;
     }
     getdata(t) {
       let e = this.getval(t);
       if (/^@/.test(t)) {
         const [, s, i] = /^@(.*?)\.(.*?)$/.exec(t),
-          r = s ? this.getval(s) : "";
-        if (r) {
+          o = s ? this.getval(s) : "";
+        if (o) {
           try {
-            const t = JSON.parse(r);
+            const t = JSON.parse(o);
             e = t ? this.lodash_get(t, i, "") : e;
           } catch (t) {
             e = "";
@@ -467,17 +597,17 @@ function Env(t, e) {
     setdata(t, e) {
       let s = !1;
       if (/^@/.test(e)) {
-        const [, i, r] = /^@(.*?)\.(.*?)$/.exec(e),
-          o = this.getval(i),
-          h = i ? "null" === o ? null : o || "{}" : "{}";
+        const [, i, o] = /^@(.*?)\.(.*?)$/.exec(e),
+          r = this.getval(i),
+          a = i ? "null" === r ? null : r || "{}" : "{}";
         try {
-          const e = JSON.parse(h);
-          this.lodash_set(e, r, t);
+          const e = JSON.parse(a);
+          this.lodash_set(e, o, t);
           s = this.setval(JSON.stringify(e), i);
         } catch (e) {
-          const o = {};
-          this.lodash_set(o, r, t);
-          s = this.setval(JSON.stringify(o), i);
+          const r = {};
+          this.lodash_set(r, o, t);
+          s = this.setval(JSON.stringify(r), i);
         }
       } else {
         s = this.setval(t, e);
@@ -485,82 +615,63 @@ function Env(t, e) {
       return s;
     }
     getval(t) {
-      return this.isSurge() || this.isLoon() ? $persistentStore.read(t) : this.isQuanX() ? $prefs.valueForKey(t) : this.isNode() ? (this.data = this.loaddata(), this.data[t]) : this.data && this.data[t] || null;
+      switch (this.getEnv()) {
+        case "Surge":
+        case "Loon":
+        case "Stash":
+        case "Shadowrocket":
+          return $persistentStore.read(t);
+        case "Quantumult X":
+          return $prefs.valueForKey(t);
+        case "Node.js":
+          this.data = this.loaddata();
+          return this.data[t];
+        default:
+          return this.data && this.data[t] || null;
+      }
     }
     setval(t, e) {
-      return this.isSurge() || this.isLoon() ? $persistentStore.write(t, e) : this.isQuanX() ? $prefs.setValueForKey(t, e) : this.isNode() ? (this.data = this.loaddata(), this.data[e] = t, this.writedata(), !0) : this.data && this.data[e] || null;
+      switch (this.getEnv()) {
+        case "Surge":
+        case "Loon":
+        case "Stash":
+        case "Shadowrocket":
+          return $persistentStore.write(t, e);
+        case "Quantumult X":
+          return $prefs.setValueForKey(t, e);
+        case "Node.js":
+          this.data = this.loaddata();
+          this.data[e] = t;
+          this.writedata();
+          return !0;
+        default:
+          return this.data && this.data[e] || null;
+      }
     }
     initGotEnv(t) {
       this.got = this.got ? this.got : require("got");
       this.cktough = this.cktough ? this.cktough : require("tough-cookie");
       this.ckjar = this.ckjar ? this.ckjar : new this.cktough.CookieJar();
-      t && (t.headers = t.headers ? t.headers : {}, void 0 === t.headers.Cookie && void 0 === t.cookieJar && (t.cookieJar = this.ckjar));
+      t && (t.headers = t.headers ? t.headers : {}, t && (t.headers = t.headers ? t.headers : {}, void 0 === t.headers.cookie && void 0 === t.headers.Cookie && void 0 === t.cookieJar && (t.cookieJar = this.ckjar)));
     }
     get(t, e = () => {}) {
-      t.headers && (delete t.headers["Content-Type"], delete t.headers["Content-Length"]);
-      this.isSurge() || this.isLoon() ? (this.isSurge() && this.isNeedRewrite && (t.headers = t.headers || {}, Object.assign(t.headers, {
-        "X-Surge-Skip-Scripting": !1
-      })), $httpClient.get(t, (t, s, i) => {
-        !t && s && (s.body = i, s.statusCode = s.status);
-        e(t, s, i);
-      })) : this.isQuanX() ? (this.isNeedRewrite && (t.opts = t.opts || {}, Object.assign(t.opts, {
-        hints: !1
-      })), $task.fetch(t).then(t => {
-        const {
-          statusCode: s,
-          statusCode: i,
-          headers: r,
-          body: o
-        } = t;
-        e(null, {
-          status: s,
-          statusCode: i,
-          headers: r,
-          body: o
-        }, o);
-      }, t => e(t))) : this.isNode() && (this.initGotEnv(t), this.got(t).on("redirect", (t, e) => {
-        try {
-          if (t.headers["set-cookie"]) {
-            const s = t.headers["set-cookie"].map(this.cktough.Cookie.parse).toString();
-            s && this.ckjar.setCookieSync(s, null);
-            e.cookieJar = this.ckjar;
-          }
-        } catch (t) {
-          this.logErr(t);
-        }
-      }).then(t => {
-        const {
-          statusCode: s,
-          statusCode: i,
-          headers: r,
-          body: o
-        } = t;
-        e(null, {
-          status: s,
-          statusCode: i,
-          headers: r,
-          body: o
-        }, o);
-      }, t => {
-        const {
-          message: s,
-          response: i
-        } = t;
-        e(s, i, i && i.body);
-      }));
-    }
-    post(t, e = () => {}) {
-      if (t.body && t.headers && !t.headers["Content-Type"] && (t.headers["Content-Type"] = "application/x-www-form-urlencoded"), t.headers && delete t.headers["Content-Length"], this.isSurge() || this.isLoon()) {
-        this.isSurge() && this.isNeedRewrite && (t.headers = t.headers || {}, Object.assign(t.headers, {
-          "X-Surge-Skip-Scripting": !1
-        }));
-        $httpClient.post(t, (t, s, i) => {
-          !t && s && (s.body = i, s.statusCode = s.status);
-          e(t, s, i);
-        });
-      } else {
-        if (this.isQuanX()) {
-          t.method = "POST";
+      switch (t.headers && (delete t.headers["Content-Type"], delete t.headers["Content-Length"], delete t.headers["content-type"], delete t.headers["content-length"]), t.params && (t.url += "?" + this.queryStr(t.params)), void 0 === t.followRedirect || t.followRedirect || ((this.isSurge() || this.isLoon()) && (t["auto-redirect"] = !1), this.isQuanX() && (t.opts ? t.opts.redirection = !1 : t.opts = {
+        redirection: !1
+      })), this.getEnv()) {
+        case "Surge":
+        case "Loon":
+        case "Stash":
+        case "Shadowrocket":
+        default:
+          this.isSurge() && this.isNeedRewrite && (t.headers = t.headers || {}, Object.assign(t.headers, {
+            "X-Surge-Skip-Scripting": !1
+          }));
+          $httpClient.get(t, (t, s, i) => {
+            !t && s && (s.body = i, s.statusCode = s.status ? s.status : s.statusCode, s.status = s.statusCode);
+            e(t, s, i);
+          });
+          break;
+        case "Quantumult X":
           this.isNeedRewrite && (t.opts = t.opts || {}, Object.assign(t.opts, {
             hints: !1
           }));
@@ -568,45 +679,127 @@ function Env(t, e) {
             const {
               statusCode: s,
               statusCode: i,
-              headers: r,
-              body: o
+              headers: o,
+              body: r,
+              bodyBytes: a
             } = t;
             e(null, {
               status: s,
               statusCode: i,
-              headers: r,
-              body: o
-            }, o);
-          }, t => e(t));
-        } else {
-          if (this.isNode()) {
-            this.initGotEnv(t);
+              headers: o,
+              body: r,
+              bodyBytes: a
+            }, r, a);
+          }, t => e(t && t.error || "UndefinedError"));
+          break;
+        case "Node.js":
+          let s = require("iconv-lite");
+          this.initGotEnv(t);
+          this.got(t).on("redirect", (t, e) => {
+            try {
+              if (t.headers["set-cookie"]) {
+                const s = t.headers["set-cookie"].map(this.cktough.Cookie.parse).toString();
+                s && this.ckjar.setCookieSync(s, null);
+                e.cookieJar = this.ckjar;
+              }
+            } catch (t) {
+              this.logErr(t);
+            }
+          }).then(t => {
             const {
-              url: s,
-              ...i
+                statusCode: i,
+                statusCode: o,
+                headers: r,
+                rawBody: a
+              } = t,
+              n = s.decode(a, this.encoding);
+            e(null, {
+              status: i,
+              statusCode: o,
+              headers: r,
+              rawBody: a,
+              body: n
+            }, n);
+          }, t => {
+            const {
+              message: i,
+              response: o
             } = t;
-            this.got.post(s, i).then(t => {
-              const {
+            e(i, o, o && s.decode(o.rawBody, this.encoding));
+          });
+          break;
+      }
+    }
+    post(t, e = () => {}) {
+      const s = t.method ? t.method.toLocaleLowerCase() : "post";
+      switch (t.body && t.headers && !t.headers["Content-Type"] && !t.headers["content-type"] && (t.headers["content-type"] = "application/x-www-form-urlencoded"), t.headers && (delete t.headers["Content-Length"], delete t.headers["content-length"]), void 0 === t.followRedirect || t.followRedirect || ((this.isSurge() || this.isLoon()) && (t["auto-redirect"] = !1), this.isQuanX() && (t.opts ? t.opts.redirection = !1 : t.opts = {
+        redirection: !1
+      })), this.getEnv()) {
+        case "Surge":
+        case "Loon":
+        case "Stash":
+        case "Shadowrocket":
+        default:
+          this.isSurge() && this.isNeedRewrite && (t.headers = t.headers || {}, Object.assign(t.headers, {
+            "X-Surge-Skip-Scripting": !1
+          }));
+          $httpClient[s](t, (t, s, i) => {
+            !t && s && (s.body = i, s.statusCode = s.status ? s.status : s.statusCode, s.status = s.statusCode);
+            e(t, s, i);
+          });
+          break;
+        case "Quantumult X":
+          t.method = s;
+          this.isNeedRewrite && (t.opts = t.opts || {}, Object.assign(t.opts, {
+            hints: !1
+          }));
+          $task.fetch(t).then(t => {
+            const {
+              statusCode: s,
+              statusCode: i,
+              headers: o,
+              body: r,
+              bodyBytes: a
+            } = t;
+            e(null, {
+              status: s,
+              statusCode: i,
+              headers: o,
+              body: r,
+              bodyBytes: a
+            }, r, a);
+          }, t => e(t && t.error || "UndefinedError"));
+          break;
+        case "Node.js":
+          let i = require("iconv-lite");
+          this.initGotEnv(t);
+          const {
+            url: o,
+            ...r
+          } = t;
+          this.got[s](o, r).then(t => {
+            const {
                 statusCode: s,
-                statusCode: i,
+                statusCode: o,
                 headers: r,
-                body: o
-              } = t;
-              e(null, {
-                status: s,
-                statusCode: i,
-                headers: r,
-                body: o
-              }, o);
-            }, t => {
-              const {
-                message: s,
-                response: i
-              } = t;
-              e(s, i, i && i.body);
-            });
-          }
-        }
+                rawBody: a
+              } = t,
+              n = i.decode(a, this.encoding);
+            e(null, {
+              status: s,
+              statusCode: o,
+              headers: r,
+              rawBody: a,
+              body: n
+            }, n);
+          }, t => {
+            const {
+              message: s,
+              response: o
+            } = t;
+            e(s, o, o && i.decode(o.rawBody, this.encoding));
+          });
+          break;
       }
     }
     time(t, e = null) {
@@ -624,44 +817,158 @@ function Env(t, e) {
       for (let e in i) new RegExp("(" + e + ")").test(t) && (t = t.replace(RegExp.$1, 1 == RegExp.$1.length ? i[e] : ("00" + i[e]).substr(("" + i[e]).length)));
       return t;
     }
-    msg(e = t, s = "", i = "", r) {
-      const o = t => {
-        if (!t) {
-          return t;
-        }
-        if ("string" == typeof t) {
-          return this.isLoon() ? t : this.isQuanX() ? {
-            "open-url": t
-          } : this.isSurge() ? {
-            url: t
-          } : void 0;
-        }
-        if ("object" == typeof t) {
-          if (this.isLoon()) {
-            let e = t.openUrl || t.url || t["open-url"],
-              s = t.mediaUrl || t["media-url"];
-            return {
-              openUrl: e,
-              mediaUrl: s
-            };
-          }
-          if (this.isQuanX()) {
-            let e = t["open-url"] || t.url || t.openUrl,
-              s = t["media-url"] || t.mediaUrl;
-            return {
-              "open-url": e,
-              "media-url": s
-            };
-          }
-          if (this.isSurge()) {
-            let e = t.url || t.openUrl || t["open-url"];
-            return {
-              url: e
-            };
-          }
+    queryStr(t) {
+      let e = "";
+      for (const s in t) {
+        let i = t[s];
+        null != i && "" !== i && ("object" == typeof i && (i = JSON.stringify(i)), e += `${s}=${i}&`);
+      }
+      e = e.substring(0, e.length - 1);
+      return e;
+    }
+    msg(e = t, s = "", i = "", o = {}) {
+      const r = t => {
+        const {
+          $open: e,
+          $copy: s,
+          $media: i,
+          $mediaMime: o
+        } = t;
+        switch (typeof t) {
+          case void 0:
+            return t;
+          case "string":
+            switch (this.getEnv()) {
+              case "Surge":
+              case "Stash":
+              default:
+                return {
+                  url: t
+                };
+              case "Loon":
+              case "Shadowrocket":
+                return t;
+              case "Quantumult X":
+                return {
+                  "open-url": t
+                };
+              case "Node.js":
+                return;
+            }
+          case "object":
+            switch (this.getEnv()) {
+              case "Surge":
+              case "Stash":
+              case "Shadowrocket":
+              default:
+                {
+                  const r = {};
+                  let a = t.openUrl || t.url || t["open-url"] || e;
+                  a && Object.assign(r, {
+                    action: "open-url",
+                    url: a
+                  });
+                  let n = t["update-pasteboard"] || t.updatePasteboard || s;
+                  if (n && Object.assign(r, {
+                    action: "clipboard",
+                    text: n
+                  }), i) {
+                    let t, e, s;
+                    if (i.startsWith("http")) {
+                      t = i;
+                    } else {
+                      if (i.startsWith("data:")) {
+                        const [t] = i.split(";"),
+                          [, o] = i.split(",");
+                        e = o;
+                        s = t.replace("data:", "");
+                      } else {
+                        e = i;
+                        s = (t => {
+                          const e = {
+                            JVBERi0: "application/pdf",
+                            R0lGODdh: "image/gif",
+                            R0lGODlh: "image/gif",
+                            iVBORw0KGgo: "image/png",
+                            "/9j/": "image/jpg"
+                          };
+                          for (var s in e) if (0 === t.indexOf(s)) {
+                            return e[s];
+                          }
+                          return null;
+                        })(i);
+                      }
+                    }
+                    Object.assign(r, {
+                      "media-url": t,
+                      "media-base64": e,
+                      "media-base64-mime": o ?? s
+                    });
+                  }
+                  Object.assign(r, {
+                    "auto-dismiss": t["auto-dismiss"],
+                    sound: t.sound
+                  });
+                  return r;
+                }
+              case "Loon":
+                {
+                  const s = {};
+                  let o = t.openUrl || t.url || t["open-url"] || e;
+                  o && Object.assign(s, {
+                    openUrl: o
+                  });
+                  let r = t.mediaUrl || t["media-url"];
+                  i?.startsWith("http") && (r = i);
+                  r && Object.assign(s, {
+                    mediaUrl: r
+                  });
+                  console.log(JSON.stringify(s));
+                  return s;
+                }
+              case "Quantumult X":
+                {
+                  const o = {};
+                  let r = t["open-url"] || t.url || t.openUrl || e;
+                  r && Object.assign(o, {
+                    "open-url": r
+                  });
+                  let a = t["media-url"] || t.mediaUrl;
+                  i?.startsWith("http") && (a = i);
+                  a && Object.assign(o, {
+                    "media-url": a
+                  });
+                  let n = t["update-pasteboard"] || t.updatePasteboard || s;
+                  n && Object.assign(o, {
+                    "update-pasteboard": n
+                  });
+                  console.log(JSON.stringify(o));
+                  return o;
+                }
+              case "Node.js":
+                return;
+            }
+          default:
+            return;
         }
       };
-      if (this.isMute || (this.isSurge() || this.isLoon() ? $notification.post(e, s, i, o(r)) : this.isQuanX() && $notify(e, s, i, o(r))), !this.isMuteLog) {
+      if (!this.isMute) {
+        switch (this.getEnv()) {
+          case "Surge":
+          case "Loon":
+          case "Stash":
+          case "Shadowrocket":
+          default:
+            $notification.post(e, s, i, r(o));
+            break;
+          case "Quantumult X":
+            $notify(e, s, i, r(o));
+            break;
+          case "Node.js":
+            break;
+        }
+      }
+      if (!this.isMuteLog) {
         let t = ["", "==============📣系统通知📣=============="];
         t.push(e);
         s && t.push(s);
@@ -670,23 +977,54 @@ function Env(t, e) {
         this.logs = this.logs.concat(t);
       }
     }
+    debug(...t) {
+      this.logLevels[this.logLevel] <= this.logLevels.debug && (t.length > 0 && (this.logs = [...this.logs, ...t]), console.log(`${this.logLevelPrefixs.debug}${t.map(t => t ?? String(t)).join(this.logSeparator)}`));
+    }
+    info(...t) {
+      this.logLevels[this.logLevel] <= this.logLevels.info && (t.length > 0 && (this.logs = [...this.logs, ...t]), console.log(`${this.logLevelPrefixs.info}${t.map(t => t ?? String(t)).join(this.logSeparator)}`));
+    }
+    warn(...t) {
+      this.logLevels[this.logLevel] <= this.logLevels.warn && (t.length > 0 && (this.logs = [...this.logs, ...t]), console.log(`${this.logLevelPrefixs.warn}${t.map(t => t ?? String(t)).join(this.logSeparator)}`));
+    }
+    error(...t) {
+      this.logLevels[this.logLevel] <= this.logLevels.error && (t.length > 0 && (this.logs = [...this.logs, ...t]), console.log(`${this.logLevelPrefixs.error}${t.map(t => t ?? String(t)).join(this.logSeparator)}`));
+    }
     log(...t) {
       t.length > 0 && (this.logs = [...this.logs, ...t]);
-      console.log(t.join(this.logSeparator));
+      console.log(t.map(t => t ?? String(t)).join(this.logSeparator));
     }
     logErr(t, e) {
-      const s = !this.isSurge() && !this.isQuanX() && !this.isLoon();
-      s ? this.log("", `❗️${this.name}, 错误!`, t.stack) : this.log("", `❗️${this.name}, 错误!`, t);
+      switch (this.getEnv()) {
+        case "Surge":
+        case "Loon":
+        case "Stash":
+        case "Shadowrocket":
+        case "Quantumult X":
+        default:
+          this.log("", `❗️${this.name}, 错误!`, e, t);
+          break;
+        case "Node.js":
+          this.log("", `❗️${this.name}, 错误!`, e, void 0 !== t.message ? t.message : t, t.stack);
+          break;
+      }
     }
     wait(t) {
       return new Promise(e => setTimeout(e, t));
     }
     done(t = {}) {
-      const e = new Date().getTime(),
-        s = (e - this.startTime) / 1000;
-      this.log("", `🔔${this.name}, 结束! 🕛 ${s} 秒`);
-      this.log();
-      (this.isSurge() || this.isQuanX() || this.isLoon()) && $done(t);
+      const e = (new Date().getTime() - this.startTime) / 1000;
+      switch (this.log("", `🔔${this.name}, 结束! 🕛 ${e} 秒`), this.log(), this.getEnv()) {
+        case "Surge":
+        case "Loon":
+        case "Stash":
+        case "Shadowrocket":
+        case "Quantumult X":
+        default:
+          $done(t);
+          break;
+        case "Node.js":
+          process.exit(1);
+      }
     }
   }(t, e);
 }
