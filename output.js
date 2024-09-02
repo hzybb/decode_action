@@ -1,4 +1,4 @@
-//Sat Aug 31 2024 15:21:37 GMT+0000 (Coordinated Universal Time)
+//Mon Sep 02 2024 04:51:49 GMT+0000 (Coordinated Universal Time)
 //Base:https://github.com/echo094/decode-js
 //Modify:https://github.com/smallfawn/decode_action
 const $ = new Env("融磐安");
